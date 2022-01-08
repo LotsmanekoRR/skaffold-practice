@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: demo
+profiles:
+  - name: local-profile
+    build:
+      artifacts:
+        - image: node-example
+          context: k8-local
+    deploy:
+      kubeContext: docker-desktop
+      kubectl:
+        manifests:
+          - k8-local/k8s-local.yaml
+
+  - name: dev-profile
+    build:
+      artifacts:
+        - image: gcr.io/glowing-road-337608/demo
+          context: k8-dev
+    deploy:
+      kubeContext: gke_glowing-road-337608_us-central1-c_my-first-cluster-1
+      kubectl:
+        manifests:
+          - k8-dev/k8s-dev.yaml
+

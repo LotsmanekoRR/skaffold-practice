@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: node
+spec:
+  ports:
+    - port: 8080
+  type: LoadBalancer
+  selector:
+    app: node
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node
+spec:
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      securityContext:
+        runAsUser: 1000
+      containers:
+        - name: node
+          image: gcr.io/glowing-road-337608/demo
+          ports:
+            - containerPort: 8080
